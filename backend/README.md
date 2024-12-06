@@ -126,9 +126,7 @@ curl -X POST http://localhost:3000/api/users/register \
   }'
 ```
 
-
 ---
-
 
 # User Login Endpoint
 
@@ -229,3 +227,73 @@ curl -X POST http://localhost:3000/api/users/login \
     "password": "securepassword"
   }'
 ```
+
+# User Profile Endpoint
+
+**Endpoint**
+`GET /api/users/profile`
+
+## Description
+
+This endpoint retrieves the profile information of the authenticated user. The user must be authenticated with a valid JWT token.
+
+## Authorization
+
+This endpoint requires a valid JWT token in the `Authorization` header or as a cookie.
+
+## Request Headers
+
+- `Authorization: Bearer <JWT_TOKEN>`
+
+## Request Body
+
+No request body is required.
+
+## Responses
+
+### Success Response
+
+- Status Code: `200 OK`
+
+- Response Body:
+
+```json
+{
+  "success": true,
+  "message": "User profile fetched successfully",
+  "user": {
+    "_id": "user_id",
+    "fullName": {
+      "firstName": "Jane",
+      "lastName": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "socketId": null
+  }
+}
+```
+
+### Error Responses
+
+- Status Code: `401 Unauthorized`
+
+  - Unauthorized Access:
+
+  ```json
+  {
+    "success": false,
+    "message": "Unauthorized access"
+  }
+  ```
+
+- Status Code: `500 Internal Server Error`
+
+  - Internal Server Error:
+
+  ```json
+  {
+    "success": false,
+    "message": "Internal server error",
+    "error": "Error message"
+  }
+  ```

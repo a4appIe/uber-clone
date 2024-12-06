@@ -63,6 +63,7 @@ module.exports.loginUser = async (req, res) => {
       });
     }
     const token = user.generateAuthToken();
+    res.cookie("token", token);
     return res.status(200).json({
       success: true,
       message: "Login successful",
@@ -72,4 +73,13 @@ module.exports.loginUser = async (req, res) => {
       },
     });
   } catch (error) {}
+};
+
+module.exports.getUserProfile = async (req, res) => {
+  const user = req.user;
+  return res.status(200).json({
+    success: true,
+    message: "User profile fetched successfully",
+    user,
+  });
 };
