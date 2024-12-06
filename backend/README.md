@@ -31,11 +31,12 @@ Example:
 }
 ```
 
-## Response 
+## Response
 
 ### Success Response
-* **Status code**: `201 Created`
-* **Response Body**: 
+
+- **Status code**: `201 Created`
+- **Response Body**:
 
 ```json
 {
@@ -58,9 +59,9 @@ Example:
 ```
 
 ### Error responses - Invalid request data
-* **Status Code**: `400 Bad Request`
-* **Response Body**:
 
+- **Status Code**: `400 Bad Request`
+- **Response Body**:
 
 ```json
 {
@@ -87,8 +88,9 @@ Example:
 ```
 
 ### User already exists
-* **Status Code**: `400 Bad Request`
-* **Response Body**:
+
+- **Status Code**: `400 Bad Request`
+- **Response Body**:
 
 ```json
 {
@@ -98,8 +100,9 @@ Example:
 ```
 
 ### Missing fields
-* **Status Code**: `400 Bad Request`
-* **Response Body**:
+
+- **Status Code**: `400 Bad Request`
+- **Response Body**:
 
 ```json
 {
@@ -120,5 +123,109 @@ curl -X POST http://localhost:3000/api/users/register \
     },
     "email": "john.doe@example.com",
     "password": "password123"
+  }'
+```
+
+
+---
+
+
+# User Login Endpoint
+
+## Endpoint
+
+`POST /api/users/login`
+
+## Description
+
+This endpoint allows a registered user to log in by providing their email and password. It validates the credentials and returns an authentication token upon successful login.
+
+## Request Body
+
+The request body should be a JSON object containing the following fields:
+
+- `email` (string, required): The user's email address. Must be a valid email format.
+- `password` (string, required): The user's password. Must be at least 3 characters long.
+
+### Example
+
+```json
+{
+  "email": "jane.doe@example.com",
+  "password": "securepassword"
+}
+```
+
+## Responses
+
+### Success Response
+
+- **Status Code**: `200 OK`
+- **Response Body**:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "user": {
+    "user": {
+      "_id": "user_id",
+      "fullName": {
+        "firstName": "Jane",
+        "lastName": "Doe"
+      },
+      "email": "jane.doe@example.com",
+      "password": "hashed_password",
+      "socketId": null
+    },
+    "token": "jwt_token"
+  }
+}
+```
+
+### Error Responses - Validation Errors
+
+- **Status Code**: `400 Bad Request`
+- **Response Body**:
+
+```json
+{
+  "success": false,
+  "message": "Something went wrong",
+  "errors": [
+    {
+      "msg": "Invalid email address",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Invalid Password",
+      "param": "password",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Invalid Credentials
+
+- **Status Code**: `401 Unauthorized`
+- _Response Body_:
+
+```json
+{
+  "success": false,
+  "message": "Invalid email or password"
+}
+```
+
+## Example Request
+
+```json
+curl -X POST http://localhost:3000/api/users/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "jane.doe@example.com",
+    "password": "securepassword"
   }'
 ```
