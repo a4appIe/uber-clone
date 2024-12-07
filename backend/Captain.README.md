@@ -185,3 +185,124 @@ curl -X POST http://localhost:3000/api/captains/register \
   }'
 ```
 
+# Captain Login Endpoint
+
+**Endpoint**
+
+`POST /api/captains/login`
+
+**Description**
+
+This endpoint allows a registered captain to log in by providing their email and password. It validates the credentials and returns an authentication token upon successful login.
+
+**Request Body**
+
+- `email` (string, required): The captain's email address. Must be a valid email format.
+- `password` (string, required): The captain's password. Must be at least 3 characters long.
+
+**Example**
+
+```json
+{
+  "email": "alice.smith@example.com",
+  "password": "securepassword"
+}
+```
+
+## Success Response
+
+- Status Code: `200 OK`
+
+- Response Body:
+
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "captain": {
+    "_id": "captain_id",
+    "fullName": {
+      "firstName": "Alice",
+      "lastName": "Smith"
+    },
+    "email": "alice.smith@example.com",
+    "socketId": null,
+    "status": "inactive",
+    "vehicle": {
+      "color": "Blue",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    },
+    "location": {
+      "lat": null,
+      "lon": null
+    }
+  },
+  "token": "jwt_token"
+}
+```
+
+## Error Responses
+
+### Validation Errors
+
+- Status Code: `400 Bad Request`
+
+- Response Body:
+
+```json
+{
+  "success": false,
+  "message": "Validation error",
+  "errors": [
+    {
+      "msg": "Invalid email address",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Invalid Password",
+      "param": "password",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Invalid Credentials
+
+- Status Code: `400 Bad Request`
+
+- Response Body:
+
+```json
+{
+  "success": false,
+  "message": "Invalid email or password"
+}
+```
+
+### Internal Server Error
+
+- Status Code: `500 Internal Server Error`
+
+- Response Body:
+
+```json
+{
+  "success": false,
+  "message": "Internal server error"
+}
+```
+
+## Example Request
+
+```json
+curl -X POST http://localhost:3000/api/captains/login \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "alice.smith@example.com",
+    "password": "securepassword"
+  }'
+```

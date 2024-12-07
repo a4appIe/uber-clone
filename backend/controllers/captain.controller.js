@@ -35,10 +35,49 @@ module.exports.registerCaptain = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
     });
+  }
+};
+
+module.exports.loginCaptain = async (req, res) => {
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: "Validation error",
+        errors: errors.array(),
+      });
+    }
+    const { email, password } = req.body;
+    const captain = await captainModel.findOne({ email }).select("+password");
+    if (!captain) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+    const isMatch = await captain.comparePassword(password);
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid email or password",
+      });
+    }
+    const token = captain.generateAuthToken();
+    res.cookie("token", token);
+    captain.password = undefined;
+    return res.status(200).json({
+      success: true,
+      message: "Login successfully",
+      captain,
+      token,
+    });
+  } catch (error) {
+    console.log(error)
   }
 };

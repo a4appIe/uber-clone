@@ -36,6 +36,7 @@ module.exports.registerUser = async (req, res) => {
 
     const token = user.generateAuthToken();
     res.cookie("token", token);
+    user.password = undefined;
     return res.status(201).json({
       success: true,
       message: "User created successfully",
@@ -76,6 +77,8 @@ module.exports.loginUser = async (req, res) => {
     }
     const token = user.generateAuthToken();
     res.cookie("token", token);
+    user.password = undefined;
+    user.password = undefined;
     return res.status(200).json({
       success: true,
       message: "Login successful",

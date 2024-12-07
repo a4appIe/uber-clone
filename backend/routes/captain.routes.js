@@ -23,4 +23,16 @@ router.post(
   captainController.registerCaptain
 );
 
+router.post(
+    "/login",
+    [
+      body("email").trim().isEmail().withMessage("Invalid email address"),
+      body("password")
+        .trim()
+        .isLength({ min: 3 })
+        .withMessage("Invalid Password"),
+    ],
+    captainController.loginCaptain
+  );
+
 module.exports = router;
