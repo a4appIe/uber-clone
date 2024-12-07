@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: "Email is required",
     unique: true,
+    lowercase: true,
+    matches: [
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+      "Email is not valid",
+    ],
   },
   password: {
     type: String,
@@ -30,7 +35,9 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateAuthToken = function () {
-  const token = jwt.sign({ _id: this.id }, process.env.JWT_SECRET, {expiresIn: '24h'});
+  const token = jwt.sign({ _id: this.id }, process.env.JWT_SECRET, {
+    expiresIn: "24h",
+  });
   return token;
 };
 

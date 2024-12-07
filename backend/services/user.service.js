@@ -1,31 +1,25 @@
 const userModel = require("../models/user.model");
 
 module.exports.createUser = async ({ fullName, email, password }, res) => {
+  try {
+    // Validate input
+    if (!fullName || !email || !password) {
+      throw new Error("Please fill in all fields");
+    }
 
-  // Validate input
-  if (!fullName || !email || !password) {
-    return res.status(400).json({
-      success: false,
-      message: "Please fill in all fields",
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      throw new Error("Email already exists");
+    }
+
+    const user = await userModel.create({
+      fullName,
+      email,
+      password,
     });
+
+    return user;
+  } catch (error) {
+    console.log(error);
   }
-
-  const existingUser = await userModel.findOne({ email });
-  if (existingUser) {
-    return res.status(400).json({
-      success: false,
-      message: "Email already exists",
-    });
-  }
-
-  const user = await userModel.create({
-    fullName: {
-      firstName: fullName.firstName,
-      lastName: fullName.lastName,
-    },
-    email,
-    password,
-  });
-
-  return user;
 };

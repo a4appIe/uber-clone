@@ -298,7 +298,7 @@ No request body is required.
   }
   ```
 
-## User Logout Endpoint
+# User Logout Endpoint
 
 **Endpoint**
 

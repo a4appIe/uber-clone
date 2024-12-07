@@ -14,20 +14,31 @@ module.exports.registerUser = async (req, res) => {
   }
   const { fullName, email, password } = req.body;
   try {
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({
+        success: false,
+        message: "Email already exists",
+      });
+    }
     const hashPassword = await userModel.hashPassword(password);
-    const user = await userService.createUser(
-      {
-        fullName,
-        email,
-        password: hashPassword,
-      },
-      res
-    );
+    const user = await userService.createUser({
+      fullName,
+      email,
+      password: hashPassword,
+    });
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "Something went wrong",
+      });
+    }
 
     const token = user.generateAuthToken();
+    res.cookie("token", token);
     return res.status(201).json({
       success: true,
-      message: "Account created successfully",
+      message: "User created successfully",
       user: {
         user,
         token,
@@ -93,6 +104,6 @@ module.exports.logoutUser = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Logout successful",
-    })
+    });
   } catch (error) {}
 };
