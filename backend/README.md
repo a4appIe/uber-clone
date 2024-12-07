@@ -297,3 +297,62 @@ No request body is required.
     "error": "Error message"
   }
   ```
+
+## User Logout Endpoint
+
+**Endpoint**
+
+`GET /api/users/logout`
+
+**Description**
+
+This endpoint logs out the authenticated user by invalidating their JWT token. It adds the token to a blacklist and clears the token cookie on the client side.
+
+**Authorization**
+
+This endpoint requires a valid JWT token in the `Authorization` header or as a cookie.
+
+**Request Headers**
+
+- `Authorization`: `Bearer <JWT_TOKEN>`
+
+**Request Body**
+
+No request body is required.
+
+**Success Response**
+
+- **Status Code**: `200 OK`
+- **Response Body**:
+
+  ```json
+  {
+    "success": true,
+    "message": "Logout successful"
+  }
+  ```
+
+### Error Responses
+
+- Status Code: `401 Unauthorized`
+
+  - Unauthorized Access:
+
+```json
+{
+  "success": false,
+  "message": "Unauthorized access"
+}
+```
+
+- Status Code: `500 Internal Server Error`
+
+  - Internal Server Error:
+
+```json
+{
+  "success": false,
+  "message": "Internal server error",
+  "error": "Error message"
+}
+```

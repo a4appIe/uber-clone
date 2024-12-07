@@ -20,14 +20,20 @@ router.post(
   userController.registerUser
 );
 
-router.post("/login", [
-  body("email").trim().isEmail().withMessage("Invalid email address"),
-  body("password")
-    .trim()
-    .isLength({ min: 3 })
-    .withMessage("Invalid Password"),
-], userController.loginUser);
+router.post(
+  "/login",
+  [
+    body("email").trim().isEmail().withMessage("Invalid email address"),
+    body("password")
+      .trim()
+      .isLength({ min: 3 })
+      .withMessage("Invalid Password"),
+  ],
+  userController.loginUser
+);
 
 router.get("/profile", authMiddleware.authUser, userController.getUserProfile);
+
+router.get("/logout", authMiddleware.authUser, userController.logoutUser);
 
 module.exports = router;
