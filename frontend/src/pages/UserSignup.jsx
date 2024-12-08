@@ -109,7 +109,7 @@ const UserSignup = () => {
             type="submit"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? "Signing up..." : "Sign Up"}
           </button>
           <p className="text-center mt-5">
             {" "}
@@ -121,11 +121,6 @@ const UserSignup = () => {
           </p>
         </form>
       </div>
-      <Link to={"/captain-login"}>
-        <button className={`bg-green-500 text-white py-3 w-full rounded mt-3`}>
-          Sign In as Captain
-        </button>
-      </Link>
     </div>
   );
 };

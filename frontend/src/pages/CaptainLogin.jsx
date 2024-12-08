@@ -20,7 +20,7 @@ const CaptainLogin = () => {
         <img
           src="https://www.svgrepo.com/show/505031/uber-driver.svg"
           alt=""
-          className="w-20 mb-10"
+          className="w-16"
         />
         <form
           className=""
