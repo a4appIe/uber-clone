@@ -6,9 +6,12 @@ const UserLogin = () => {
     email: "",
     password: "",
   });
+  const [loading, setLoading] = useState(false);
 
-  function handleSubmit() {
+  function handleSubmit(e) {
     e.preventDefault();
+    setLoading(true);
+    setLoading(false);
   }
 
   return (
@@ -27,7 +30,7 @@ const UserLogin = () => {
         >
           <div className="w-full mb-5">
             <label htmlFor="email">
-              <h3 className="text-xl mb-2 font-medium">What's your email</h3>
+              <h3 className="text-base mb-2 font-medium">What's your email</h3>
             </label>
             <input
               required
@@ -43,7 +46,7 @@ const UserLogin = () => {
           </div>
           <div className="w-full mb-5">
             <label htmlFor="password">
-              <h3 className="text-xl mb-2 font-medium">Enter password</h3>
+              <h3 className="text-base mb-2 font-medium">Enter password</h3>
             </label>
             <input
               required
@@ -60,8 +63,9 @@ const UserLogin = () => {
           <button
             className="bg-black text-white py-3 w-full rounded mt-2"
             type="submit"
+            disabled={loading}
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
           <p className="text-center mt-5">
             {" "}
@@ -73,9 +77,9 @@ const UserLogin = () => {
           </p>
         </form>
       </div>
-      <Link to={"/captain-signup"}>
-        <button className="bg-green-500 text-white py-3 w-full rounded mt-3">
-          Signup as Captain
+      <Link to={"/captain-login"}>
+        <button className={`bg-green-500 text-white py-3 w-full rounded mt-3`}>
+          Sign In as Captain
         </button>
       </Link>
     </div>
