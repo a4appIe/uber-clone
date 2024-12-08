@@ -306,3 +306,138 @@ curl -X POST http://localhost:3000/api/captains/login \
     "password": "securepassword"
   }'
 ```
+
+# Captain Profile Endpoint
+
+**Endpoint**
+
+`GET /api/captains/profile`
+
+**Description**
+
+This endpoint retrieves the profile information of the authenticated captain. The captain must be authenticated with a valid JWT token.
+
+**Authorization**
+
+This endpoint requires a valid JWT token in the `Authorization` header or as a cookie.
+
+**Request Headers**
+
+- `Authorization`: `Bearer <JWT_TOKEN>`
+
+**Request Body**
+
+No request body is required.
+
+**Success Response**
+
+- **Status Code**: `200 OK`
+- **Response Body**:
+
+  ```json
+  {
+    "success": true,
+    "message": "Captain profile fetched successfully",
+    "captain": {
+      "_id": "captain_id",
+      "fullName": {
+        "firstName": "Alice",
+        "lastName": "Smith"
+      },
+      "email": "alice.smith@example.com",
+      "socketId": null,
+      "status": "inactive",
+      "vehicle": {
+        "color": "Blue",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      },
+      "location": {
+        "lat": null,
+        "lon": null
+      }
+    }
+  }
+  ```
+
+## Error Responses
+
+- Status Code: `401 Unauthorized`
+
+  - Response Body:
+    ```json
+    {
+      "success": false,
+      "message": "Unauthorized access"
+    }
+    ```
+
+- Status Code: `500 Internal Server Error`
+
+  - Response Body:
+
+    ```json
+    {
+      "success": false,
+      "message": "Internal server error",
+      "error": "Error message"
+    }
+    ```
+
+# Captain Logout Endpoint
+
+**Endpoint**
+
+`GET /api/captains/logout`
+
+**Description**
+
+This endpoint logs out the authenticated captain by invalidating their JWT token. It adds the token to a blacklist and clears the token cookie on the client side.
+
+**Authorization**
+
+This endpoint requires a valid JWT token in the `Authorization `header or as a cookie.
+
+**Request Headers**
+
+`Authorization: Bearer <JWT_TOKEN>`
+
+**Request Body**
+
+No request body is required.
+
+**Success Response**
+
+- Status Code: `200 OK`
+
+  - Response Body:
+    ```json
+    {
+      "success": true,
+      "message": "Logout successful"
+    }
+    ```
+
+## Error Responses
+
+- Status Code: `401 Unauthorized`
+
+  - Response Body:
+    ```json
+    {
+      "success": false,
+      "message": "Unauthorized access"
+    }
+    ```
+
+- Status Code: `500 Internal Server Error`
+
+  - Response Body:
+    ```json
+    {
+      "success": false,
+      "message": "Internal server error",
+      "error": "Error message"
+    }
+    ```

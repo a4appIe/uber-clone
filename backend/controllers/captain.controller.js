@@ -1,6 +1,7 @@
 const captainModel = require("../models/captain.model");
 const { validationResult } = require("express-validator");
 const captainService = require("../services/captain.service");
+const blacklistTokenModel = require("../models/blacklistToken.model");
 
 module.exports.registerCaptain = async (req, res) => {
   try {
@@ -78,6 +79,48 @@ module.exports.loginCaptain = async (req, res) => {
       token,
     });
   } catch (error) {
-    console.log(error)
+    console.log(error);
+  }
+};
+
+module.exports.getCaptainProfile = async (req, res) => {
+  try {
+    const captain = req.captain;
+    return res.status(200).json({
+      success: true,
+      message: "Captain profile fetched successfully",
+      captain,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error,
+    });
+  }
+};
+
+module.exports.logoutCaptain = async (req, res) => {
+  try {
+    const token =
+      req?.cookies?.token || req?.headers?.authorization?.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized access",
+      });
+    }
+    await blacklistTokenModel.create({ token });
+    res.clearCookie("token");
+    return res.status(200).json({
+      success: true,
+      message: "Logout successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error,
+    });
   }
 };
